@@ -2,6 +2,116 @@ import os
 import json
 import argparse
 
+
+module_localvars_template = [
+    "//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
+    "//Begin of declaring local signals and parameters of [module_name] module section",
+    "//Internal constants",
+    "localparam \t[localparam_type] \t[localparam_name] \t= [localparam_value];"
+    "//Intenral signals"
+    "\t[signal_type] \t[[singal_width]-1 : 0] \t[signal_name];",
+    "//End of declaring local signals and parameters  of [common_module_template] module section",
+    "//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+]
+
+
+module_always_comb_template = [
+    "always_comb",
+    "begin",
+    "\tsignal_name = value_to_assign;",
+    "end"
+]
+
+module_assign_template = [
+    "assign signal_name = value_to_assign;"
+]
+
+module_always_ff_rst_template = [
+    "always_ff @(posedge clk or negedge rst_n)",
+    "begin",
+    "\tif(!rst_n)",
+    "\t\tbegin",
+    "\t\t\tsignal_name <= value_to_reset;",
+    "\t\tend",
+    "\telse",
+    "\t\tbegin",
+    "\t\t\tsignal_name <= value_to_assign;",
+    "\t\tend",
+    "end"
+]
+
+module_always_ff_norst_template = [
+    "always_ff @(posedge clk)",
+    "begin",
+    "\tsignal_name <= value_to_assign;",
+    "end"
+]
+
+def create_module_header(module):
+    module_header_ready = []
+
+    ports_counter = 0 
+    for signal in module['signals']:
+        if signal['signal_direction'] != 'internal':
+            ports_counter += 1
+    print("Number of ports found {}".format(ports_counter))
+    
+    module_header_ready.append("module {} #".format(module['name']))
+    module_header_ready.append("(")
+    
+    for param_index, param in enumerate(module['parameters']):
+        param_line = "\tparameter \t{} \t{} \t= {}".format(
+            param['param_type'],
+            param['param_name'],
+            param['param_value']
+        )
+        if param_index != len(module['parameters']) - 1:
+            param_line += ","
+        module_header_ready.append(param_line)
+    
+    module_header_ready.append(")")
+    module_header_ready.append("(")
+    
+    module_header_ready.append("\t //Basic ports declaration")
+    module_header_ready.append("\tinput \tlogic \tclk,")
+    module_header_ready.append("\tinput \tlogic \trst_n,")
+    module_header_ready.append("")
+    
+    for signal_index, signal in enumerate(module['signals']):
+        if signal['signal_direction'] != 'internal':
+            if signal['signal_width'] == '1':
+                port_line = "\t{} \t{} \t\t\t\t{}".format(
+                    signal['signal_direction'],
+                    signal['signal_type'],
+                    signal['signal_name']
+                )
+            else:
+                port_line = "\t{} \t{} \t[{}-1:0] \t{}".format(
+                    signal['signal_direction'],
+                    signal['signal_type'],
+                    signal['signal_width'],
+                    signal['signal_name']
+                )
+            
+            remaining_ports = False
+            for remaining_signal in module['signals'][signal_index+1:]:
+                if remaining_signal['signal_direction'] != 'internal':
+                    remaining_ports = True
+                    break
+            
+            if remaining_ports:
+                port_line += ","
+            
+            module_header_ready.append(port_line)
+    
+    module_header_ready.append(");")
+    
+    return module_header_ready
+
+
+
+
+
 def parse_and_create(json_data):
     for module in json_data['modules']:
         print(">"*50)
@@ -32,130 +142,11 @@ def parse_and_create(json_data):
             print("Not found {}, creating the file...".format(full_path_to_module))
 
             with open(full_path_to_module, 'w') as created_file:
-                with open("../generation_templates/modules/common_module_template.sv") as template_file:
+                module_header = create_module_header(module)
+                print (module_header)
+                for header_entry in module_header:
+                    created_file.write(header_entry + "\n")
 
-                    #Declaring flag to mark up the required fields
-                    generation_markup = False
-
-                    #Finding and replacing name of the module
-                    for line in template_file:
-                        if line.startswith("module"):
-                            captured_line = line
-                            replaced_line = captured_line.replace("[common_module_template]", module['name'])
-                            created_file.write(replaced_line)
-                            break
-                    
-                    #Find and replace parameters in the template module
-                    generation_markup = False
-                    for line in template_file:
-                        if(line.startswith("//Begin of declaring [common_module_template]'s parameters")):
-                            generation_markup = True
-                            continue
-                        elif(line.startswith("//End of declaring [common_module_template]'s parameters")):
-                            generation_markup = False
-                            break
-                        elif(generation_markup):
-                            if(("[param_type]" in line) and ("[param_name]" in line) and ("[param_value]" in line)):
-                                for param_num in range(len(module['parameters'])):
-                                    captured_line = line
-                                    captured_line = captured_line.replace("[param_type]",   module['parameters'][param_num]['param_type'])
-                                    captured_line = captured_line.replace("[param_name]",   module['parameters'][param_num]['param_name'])
-                                    captured_line = captured_line.replace("[param_value]",  module['parameters'][param_num]['param_value'])
-
-                                    #Checking on the last parameter for the correct comma placement
-                                    if(param_num == len(module['parameters'])-1):
-                                        captured_line = captured_line.replace(',','')
-
-                                    created_file.write("{}".format(captured_line))
-                            else:
-                                created_file.write("{}".format(line))
-
-                    #Find and replace parameters in the template module
-                    generation_markup = False
-
-                    ports_counter = 0
-                    for signal_num in range(len(module['signals'])):
-                        if (module['signals'][signal_num]['signal_direction'] != 'internal'):
-                            ports_counter += 1
-
-                    for line in template_file:
-                        if(line.startswith("Begin of declaring ports of")):
-                            generation_markup = True
-                            continue
-
-                        elif(line.startswith("End of declaring ports of")):
-                            generation_markup = False
-                            break
-                        
-                        elif(generation_markup):
-                            if(("[singal_direction]" in line) and ("[signal_type]" in line) and ("[singal_width]" in line) and ("[signal_name]" in line)):
-                                for signal_num in range(ports_counter):
-                                    captured_line = line
-
-                                    captured_line = captured_line.replace("[singal_direction]", module['signals'][signal_num]['signal_direction'])
-                                    captured_line = captured_line.replace("[signal_type]", module['signals'][signal_num]['signal_type'])
-
-                                    captured_line = captured_line.replace("[singal_width]", str(module['signals'][signal_num]['signal_width']))
-
-                                    if(module['signals'][signal_num]['signal_width'] != '1'):
-                                        captured_line = captured_line.replace("[singal_width]", str(module['signals'][signal_num]['signal_width']))
-                                    else:
-                                        captured_line = captured_line.replace("[[singal_width]-1 : 0]", "\t\t")
-
-                                    captured_line = captured_line.replace("[signal_name]", module['signals'][signal_num]['signal_name'])
-
-                                    #Checking on the last parameter for the correct comma placement
-                                    if(signal_num == ports_counter - 1):
-                                        captured_line = captured_line.replace(',','')
-
-                                    created_file.write("{}".format(captured_line))
-                            else:
-                                created_file.write("{}".format(line))
-
-                    #Find and insert functions template if some of them exist
-                    generation_markup = False
-                    if(len(module['functions']) != 0):
-                        #TODO - create fucntion generation (WIP)
-                        print("Functions insert is WIP section of generator") 
-
-                    #Find and insert all localparams and internal signals
-                    for line in template_file:
-                        if(line.startswith("Begin of declaring local signals")):
-                            temp_line = line
-                            temp_line = temp_line.replace("[common_module_template]", module['name'])
-                            created_file.write("{}".format(line))
-                            generation_markup = True
-                            continue
-                        
-                        elif(line.startswith("End of declaring local signals")):
-                            temp_line = line
-                            temp_line = temp_line.replace("[common_module_template]", module['name'])
-                            created_file.write("{}".format(line))
-                            generation_markup = False
-                            break
-
-                        elif(generation_markup):
-                            if((len(module['localparams'])) != 0):
-                                #TODO - create fucntion generation (WIP)
-                                print("Functions insert is WIP section of generator")
-
-                            if(("[signal_type]" in line) and ("[singal_width]" in line) and ("[signal_name]" in line)):
-                                for signal_num in range(len(module['signals'])):
-
-                                    if(module['signals'][signal_num]['signal_direction'] == 'internal'):
-                                        captured_line = line
-                                        captured_line = captured_line.replace("[signal_type]", module['signals'][signal_num]['signal_type'])
-
-                                        if(module['signals'][signal_num]['signal_width'] != '1'):
-                                            captured_line = captured_line.replace("[singal_width]", str(module['signals'][signal_num]['signal_width']))
-                                        else:
-                                            captured_line = captured_line.replace("[[singal_width]-1 : 0]", "\t\t")
-                                        
-                                        captured_line = captured_line.replace("[signal_name]", module['signals'][signal_num]['signal_name'])
-
-                                        created_file.write("{}".format(captured_line))
-                            else:
-                                created_file.write("{}".format(line))
 
         print("<"*50)
         print("\n")
