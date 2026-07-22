@@ -1,8 +1,8 @@
 module [common_module_template]
-//Begin of declaring [common_module_template]'sparameters
+//Begin of declaring [common_module_template]'s parameters
 #
 (
-    parameter		[my_parameter]		=	,
+parameter	[param_type]	[param_name]	=	[param_value],
 )
 //End of declaring [common_module_template]'s parameters
 
@@ -10,18 +10,13 @@ module [common_module_template]
 //Begin of declaring [common_module_template]'s singals
 (
     //Basic signals declaration begin
-    input		logic		            clk                     ,
-    input		logic		            rst_n                   ,
+    input		logic		                                                clk                 ,
+    input		logic		                                                rst_n               ,
     //Basic signals declaration end
     
-    //Input signals declaration begin
-    input		logic		            [in_port_single]        ,
-    input		logic		[0 : 0] 	[in_port_bus]           ,
-    //Input signals declaration end
-
-    //Output signals
-    output		logic		            [out_port_single]       ,
-    output		logic		[0 : 0] 	[out_port_bus]          ,
+    //Data signals declaration begin
+    [singal_direction]		[signal_type]		[[singal_width]-1 : 0] 	    [signal_name]       ,
+    //Data signals declaration end
 );
 //End of declaring [common_module_template]'s singals
 
@@ -48,8 +43,7 @@ endfunction
 localparam      int      [my_local_parameter]       =   ;
 
 //Intenral signals
-logic		            [internal_signal_single]        ;
-logic		[0 : 0] 	[internal_signal_bus]           ;
+[signal_type]		[[singal_width]-1 : 0] 	    [signal_name]       ,
 
 //End of declaring local signals and parameters  of [common_module_template] module section
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -64,7 +58,7 @@ begin
     signal_name = value_to_assign;
 end
 
-assign [signal_name] = value_to_assign;
+assign signal_name = value_to_assign;
 
 //End of driving [signal_name] via combinational driver section
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

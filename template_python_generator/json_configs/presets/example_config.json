@@ -1,0 +1,114 @@
+{
+      "modules": [
+        {
+          "path_to_place":"../../../open_source_isp_library/isp_gamma_correction/sv_src",
+
+          "name": "isp_gamma_correction",
+
+          "parameters": [
+            {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
+            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+          ],
+
+          "localparams": [],
+
+          "signals": [
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "in_stream_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,              "signal_name": "in_valid_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,              "signal_name": "in_first_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,              "signal_name": "in_last_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,              "signal_name": "bypass_mode"},
+
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "out_stream_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,              "signal_name": "out_valid_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,              "signal_name": "out_first_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,              "signal_name": "out_last_data"},
+
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "latch_stream_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,              "signal_name": "latch_valid_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,              "signal_name": "latch_first_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,              "signal_name": "latch_last_data"}
+          ],
+
+          "functions": []
+        },
+
+
+        {
+          "path_to_place":"../../../open_source_isp_library/isp_negative_filter/sv_src",
+
+          "name": "isp_negative_filter",
+
+          "parameters": [
+            {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
+            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+          ],
+
+          "localparams": [],
+
+          "signals": [
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "in_stream_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,              "signal_name": "in_valid_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,              "signal_name": "in_first_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,              "signal_name": "in_last_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,              "signal_name": "bypass_mode"},
+
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "out_stream_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,              "signal_name": "out_valid_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,              "signal_name": "out_first_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,              "signal_name": "out_last_data"},
+
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "latch_stream_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,              "signal_name": "latch_valid_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,              "signal_name": "latch_first_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,              "signal_name": "latch_last_data"}
+          ],
+
+          "functions": []
+        },
+        
+
+        {
+          "path_to_place":"../../../open_source_isp_library/isp_image_cutter/sv_src",
+
+          "name": "isp_image_cutter",
+
+          "parameters": [
+            {"param_type": "int", "param_name": "SYS_REG_WIDTH",    "param_value": "32"},
+            {"param_type": "int", "param_name": "DATA_WIDTH",       "param_value": "8"},
+            {"param_type": "int", "param_name": "SYNC_RESET",       "param_value": "0"}
+          ],
+
+          "localparams": [],
+
+          "signals": [
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "DATA_WIDTH",       "signal_name": "in_stream_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,                  "signal_name": "in_valid_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,                  "signal_name": "in_first_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,                  "signal_name": "in_last_data"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,                  "signal_name": "bypass_mode"},
+
+
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "SYS_REG_WIDTH",    "signal_name": "cut_from_value"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "SYS_REG_WIDTH",    "signal_name": "cut_to_value"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": 1,                  "signal_name": "use_orig_on_cut"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "SYS_REG_WIDTH",    "signal_name": "value_to_set_on_cut"},
+
+
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": "DATA_WIDTH",       "signal_name": "out_stream_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,                  "signal_name": "out_valid_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,                  "signal_name": "out_first_data"},
+            {"signal_direction": "output",    "signal_type": "logic", "signal_width": 1,                  "signal_name": "out_last_data"},
+
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": "DATA_WIDTH",       "signal_name": "latch_stream_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,                  "signal_name": "latch_valid_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,                  "signal_name": "latch_first_data"},
+            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": 1,                  "signal_name": "latch_last_data"}
+          ],
+
+          "functions": []
+        }
+      ],
+
+      "testbenches": []
+}
