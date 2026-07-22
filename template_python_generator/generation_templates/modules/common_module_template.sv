@@ -7,18 +7,16 @@ parameter	[param_type]	[param_name]	=	[param_value],
 //End of declaring [common_module_template]'s parameters
 
 
-//Begin of declaring [common_module_template]'s singals
+//Begin of declaring ports of [common_module_template]
 (
-    //Basic signals declaration begin
+    //Basic ports declaration
     input		logic		                                                clk                 ,
     input		logic		                                                rst_n               ,
-    //Basic signals declaration end
     
-    //Data signals declaration begin
+    //Data ports declaration
     [singal_direction]		[signal_type]		[[singal_width]-1 : 0] 	    [signal_name]       ,
-    //Data signals declaration end
 );
-//End of declaring [common_module_template]'s singals
+//End of declaring ports of [common_module_template]
 
 
 
@@ -43,7 +41,7 @@ endfunction
 localparam      int      [my_local_parameter]       =   ;
 
 //Intenral signals
-[signal_type]		[[singal_width]-1 : 0] 	    [signal_name]       ,
+[signal_type]		[[singal_width]-1 : 0] 	    [signal_name]       ;
 
 //End of declaring local signals and parameters  of [common_module_template] module section
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
