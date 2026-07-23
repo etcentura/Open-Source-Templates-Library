@@ -2,51 +2,6 @@ import os
 import json
 import argparse
 
-
-module_localvars_template = [
-    "//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
-    "//Begin of declaring local signals and parameters of [module_name] module section",
-    "//Internal constants",
-    "localparam \t[localparam_type] \t[localparam_name] \t= [localparam_value];"
-    "//Intenral signals"
-    "\t[signal_type] \t[[singal_width]-1 : 0] \t[signal_name];",
-    "//End of declaring local signals and parameters  of [common_module_template] module section",
-    "//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-]
-
-
-module_always_comb_template = [
-    "always_comb",
-    "begin",
-    "\tsignal_name = value_to_assign;",
-    "end"
-]
-
-module_assign_template = [
-    "assign signal_name = value_to_assign;"
-]
-
-module_always_ff_rst_template = [
-    "always_ff @(posedge clk or negedge rst_n)",
-    "begin",
-    "\tif(!rst_n)",
-    "\t\tbegin",
-    "\t\t\tsignal_name <= value_to_reset;",
-    "\t\tend",
-    "\telse",
-    "\t\tbegin",
-    "\t\t\tsignal_name <= value_to_assign;",
-    "\t\tend",
-    "end"
-]
-
-module_always_ff_norst_template = [
-    "always_ff @(posedge clk)",
-    "begin",
-    "\tsignal_name <= value_to_assign;",
-    "end"
-]
-
 def create_module_header(module):
     # Create empty array ot fill it with fields
     module_header_ready = []
@@ -201,9 +156,6 @@ def create_module_local_variables(module):
     module_localvars_ready.append('')
 
     return module_localvars_ready
-
-
-
 
 
 def parse_and_create(json_data):
