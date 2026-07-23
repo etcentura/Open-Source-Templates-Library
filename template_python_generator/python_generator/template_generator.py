@@ -48,72 +48,118 @@ module_always_ff_norst_template = [
 ]
 
 def create_module_header(module):
+    # Create empty array ot fill it with fields
     module_header_ready = []
 
-    ports_counter = 0 
-    for signal in module['signals']:
-        if signal['signal_direction'] != 'internal':
-            ports_counter += 1
-    print("Number of ports found {}".format(ports_counter))
-    
-    module_header_ready.append("module {} #".format(module['name']))
-    module_header_ready.append("(")
-    
-    for param_index, param in enumerate(module['parameters']):
-        param_line = "\tparameter \t{} \t{} \t= {}".format(
-            param['param_type'],
-            param['param_name'],
-            param['param_value']
-        )
-        if param_index != len(module['parameters']) - 1:
-            param_line += ","
-        module_header_ready.append(param_line)
-    
-    module_header_ready.append(")")
-    module_header_ready.append("(")
-    
-    module_header_ready.append("\t //Basic ports declaration")
-    module_header_ready.append("\tinput \tlogic \tclk,")
-    module_header_ready.append("\tinput \tlogic \trst_n,")
-    module_header_ready.append("")
-    
-    for signal_index, signal in enumerate(module['signals']):
-        if signal['signal_direction'] != 'internal':
-            if signal['signal_width'] == '1':
-                port_line = "\t{} \t{} \t\t\t\t{}".format(
-                    signal['signal_direction'],
-                    signal['signal_type'],
-                    signal['signal_name']
-                )
-            else:
-                port_line = "\t{} \t{} \t[{}-1:0] \t{}".format(
-                    signal['signal_direction'],
-                    signal['signal_type'],
-                    signal['signal_width'],
-                    signal['signal_name']
-                )
-            
-            remaining_ports = False
-            for remaining_signal in module['signals'][signal_index+1:]:
-                if remaining_signal['signal_direction'] != 'internal':
-                    remaining_ports = True
-                    break
-            
-            if remaining_ports:
-                port_line += ","
-            
-            module_header_ready.append(port_line)
-    
-    module_header_ready.append(");")
-    
-    return module_header_ready
+    # Create module header
+    module_header_ready.append("module {}".format(module['name']))
 
+    # Create parameter section
+    if(len(module['parameters']) != 0):
+        module_header_ready.append('#')
+        module_header_ready.append('(')
+
+        for parameter_idx in range(len(module['parameters'])):
+            param_type = module['parameters'][parameter_idx]['param_type']
+            param_name = module['parameters'][parameter_idx]['param_name']
+            param_value = module['parameters'][parameter_idx]['param_value']
+            parameter_string = '\tparameter \t{} \t{} \t= {}'.format(param_type, param_name, param_value)
+
+            if(parameter_idx != len(module['parameters']) - 1):
+                parameter_string += ','
+
+            module_header_ready.append(parameter_string)
+        module_header_ready.append(')')
+        module_header_ready.append('')
+
+
+    # Create basic signals section
+    module_header_ready.append('(')
+    if(len(module['basic_signals']) != 0):
+        module_header_ready.append('\t//Basic signals declaration')
+
+        for basic_signal_idx in range(len(module['basic_signals'])):
+            signal_direction = module['basic_signals'][basic_signal_idx]['signal_direction']
+            signal_type = module['basic_signals'][basic_signal_idx]['signal_type']
+            signal_width = module['basic_signals'][basic_signal_idx]['signal_width']
+            signal_name = module['basic_signals'][basic_signal_idx]['signal_name']
+
+            if(signal_width == '1'):
+                singnal_string = '\t{} \t{} \t{} \t{}'.format(signal_direction, signal_type, '\t\t\t', signal_name)
+            else:
+                singnal_string = '\t{} \t{} \t[{}-1:0] \t\t{}'.format(signal_direction, signal_type, signal_width, signal_name)
+
+            if(len(module['input_signals']) == 0) and (len(module['output_signals']) == 0) \
+                and (len(module['inout_signals']) == 0) and (basic_signal_idx == len(module['basic_signals'])-1):
+                print("Warning: module {} has no signals after basic ones".format(module['name']))
+            else:
+                singnal_string += ','
+
+            module_header_ready.append(singnal_string)
+        module_header_ready.append('')
+
+
+    # Create input signals section
+    if(len(module['input_signals']) != 0):
+        module_header_ready.append('\t//Input signals signals declaration')
+
+        for input_signal_idx in range(len(module['input_signals'])):
+            signal_direction = module['input_signals'][input_signal_idx]['signal_direction']
+            signal_type = module['input_signals'][input_signal_idx]['signal_type']
+            signal_width = module['input_signals'][input_signal_idx]['signal_width']
+            signal_name = module['input_signals'][input_signal_idx]['signal_name']
+
+            if(signal_width == '1'):
+                singnal_string = '\t{} \t{} \t{} \t{}'.format(signal_direction, signal_type, '\t\t\t', signal_name)
+            else:
+                singnal_string = '\t{} \t{} \t[{}-1:0] \t\t{}'.format(signal_direction, signal_type, signal_width, signal_name)
+
+            if(len(module['output_signals']) == 0) \
+                and (len(module['inout_signals']) == 0) and (input_signal_idx == len(module['input_signals'])-1):
+                print("Warning: module {} has no signals after basic ones".format(module['name']))
+            else:
+                singnal_string += ','
+
+            module_header_ready.append(singnal_string)
+        module_header_ready.append('')
+
+
+        # Create output signals section
+        if(len(module['output_signals']) != 0):
+            module_header_ready.append('\t//Output signals signals declaration')
+
+            for output_signal_idx in range(len(module['output_signals'])):
+                signal_direction = module['output_signals'][output_signal_idx]['signal_direction']
+                signal_type = module['output_signals'][output_signal_idx]['signal_type']
+                signal_width = module['output_signals'][output_signal_idx]['signal_width']
+                signal_name = module['output_signals'][output_signal_idx]['signal_name']
+
+                if(signal_width == '1'):
+                    singnal_string = '\t{} \t{} \t{} \t{}'.format(signal_direction, signal_type, '\t\t\t', signal_name)
+                else:
+                    singnal_string = '\t{} \t{} \t[{}-1:0] \t\t{}'.format(signal_direction, signal_type, signal_width, signal_name)
+
+                if(len(module['inout_signals']) == 0) and (output_signal_idx == len(module['output_signals'])-1):
+                    print("Warning: module {} has no signals after input ones".format(module['name']))
+                else:
+                    singnal_string += ','
+
+                module_header_ready.append(singnal_string)
+            module_header_ready.append('')
+
+    # Create inout signals section (WIP)
+
+    # Create finish signals generation section
+    module_header_ready.append(');')
+
+    return module_header_ready
 
 
 
 
 def parse_and_create(json_data):
     for module in json_data['modules']:
+
         print(">"*50)
 
         relative_path_to_place = module['path_to_place']
