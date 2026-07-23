@@ -20,19 +20,18 @@
           ],
 
           "input_signals": [
-            
-            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "in_stream_data"},
-            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "1",            "signal_name": "in_valid_data"},
-            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "1",            "signal_name": "in_first_data"},
-            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "1",            "signal_name": "in_last_data"},
-            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "1",            "signal_name": "bypass_mode"}
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "in_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_last_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "bypass_mode"}
           ],
 
           "output_signals": [
-            {"signal_direction": "output",    "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "out_stream_data"},
-            {"signal_direction": "output",    "signal_type": "logic", "signal_width": "1",            "signal_name": "out_valid_data"},
-            {"signal_direction": "output",    "signal_type": "logic", "signal_width": "1",            "signal_name": "out_first_data"},
-            {"signal_direction": "output",    "signal_type": "logic", "signal_width": "1",            "signal_name": "out_last_data"}
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "out_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_last_data"}
           ],
 
           "inout_signals": [
@@ -40,10 +39,10 @@
           ],
 
           "internal_signals": [
-            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "latch_stream_data"},
-            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": "1",            "signal_name": "latch_valid_data"},
-            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": "1",            "signal_name": "latch_first_data"},
-            {"signal_direction": "internal",  "signal_type": "logic", "signal_width": "1",            "signal_name": "latch_last_data"}
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "latch_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "latch_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "latch_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "latch_last_data"}
           ],
 
           "functions": [

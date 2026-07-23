@@ -104,15 +104,14 @@ def create_module_header(module):
         module_header_ready.append('\t//Input signals signals declaration')
 
         for input_signal_idx in range(len(module['input_signals'])):
-            signal_direction = module['input_signals'][input_signal_idx]['signal_direction']
             signal_type = module['input_signals'][input_signal_idx]['signal_type']
             signal_width = module['input_signals'][input_signal_idx]['signal_width']
             signal_name = module['input_signals'][input_signal_idx]['signal_name']
 
             if(signal_width == '1'):
-                singnal_string = '\t{} \t{} \t{} \t{}'.format(signal_direction, signal_type, '\t\t\t', signal_name)
+                singnal_string = '\t{} \t{} \t{} \t{}'.format('input', signal_type, '\t\t\t', signal_name)
             else:
-                singnal_string = '\t{} \t{} \t[{}-1:0] \t\t{}'.format(signal_direction, signal_type, signal_width, signal_name)
+                singnal_string = '\t{} \t{} \t[{}-1:0] \t\t{}'.format('input', signal_type, signal_width, signal_name)
 
             if(len(module['output_signals']) == 0) \
                 and (len(module['inout_signals']) == 0) and (input_signal_idx == len(module['input_signals'])-1):
@@ -129,15 +128,14 @@ def create_module_header(module):
             module_header_ready.append('\t//Output signals signals declaration')
 
             for output_signal_idx in range(len(module['output_signals'])):
-                signal_direction = module['output_signals'][output_signal_idx]['signal_direction']
                 signal_type = module['output_signals'][output_signal_idx]['signal_type']
                 signal_width = module['output_signals'][output_signal_idx]['signal_width']
                 signal_name = module['output_signals'][output_signal_idx]['signal_name']
 
                 if(signal_width == '1'):
-                    singnal_string = '\t{} \t{} \t{} \t{}'.format(signal_direction, signal_type, '\t\t\t', signal_name)
+                    singnal_string = '\t{} \t{} \t{} \t{}'.format('output', signal_type, '\t\t\t', signal_name)
                 else:
-                    singnal_string = '\t{} \t{} \t[{}-1:0] \t\t{}'.format(signal_direction, signal_type, signal_width, signal_name)
+                    singnal_string = '\t{} \t{} \t[{}-1:0] \t\t{}'.format('output', signal_type, signal_width, signal_name)
 
                 if(len(module['inout_signals']) == 0) and (output_signal_idx == len(module['output_signals'])-1):
                     print("Warning: module {} has no signals after input ones".format(module['name']))
@@ -153,6 +151,57 @@ def create_module_header(module):
     module_header_ready.append(');')
 
     return module_header_ready
+
+
+def create_module_local_variables(module):
+    # Create empty array ot fill it with fields
+    module_localvars_ready = []
+
+    module_localvars_ready.append('')
+    module_localvars_ready.append("//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+    module_localvars_ready.append("//Begin of declaring local signals and parameters of {}'s module section".format(module['name']))
+    module_localvars_ready.append('')
+
+    # Create local parameter section
+    if(len(module['localparams']) != 0):
+        module_localvars_ready.append('//Declaring local parameters')
+        module_localvars_ready.append('')
+
+        for localparam_idx in range(len(module['localparams'])):
+            localparam_type = module['localparams'][localparam_idx]['localparam_type']
+            localparam_name = module['localparams'][localparam_idx]['localparam_name']
+            localparam_value = module['localparams'][localparam_idx]['localparam_value']
+            localparameter_string = 'localparam \t{} \t{} \t= {};'.format(localparam_type, localparam_name, localparam_value)
+
+            module_localvars_ready.append(localparameter_string)
+        module_localvars_ready.append('')
+
+    # Create local parameter section
+    if(len(module['internal_signals']) != 0):
+        module_localvars_ready.append('//Declaring local signals')
+        module_localvars_ready.append('')
+    
+        for internal_signal_idx in range(len(module['internal_signals'])):
+            signal_type = module['internal_signals'][internal_signal_idx]['signal_type']
+            signal_width = module['internal_signals'][internal_signal_idx]['signal_width']
+            signal_name = module['internal_signals'][internal_signal_idx]['signal_name']
+
+            if(signal_width == '1'):
+                singnal_string = '{} \t{} \t{};'.format(signal_type, '\t\t\t', signal_name)
+            else:
+                singnal_string = '{} \t[{}-1:0] \t\t{};'.format(signal_type, signal_width, signal_name)
+    
+            module_localvars_ready.append(singnal_string)
+
+        module_localvars_ready.append('')
+
+    module_localvars_ready.append('')
+    module_localvars_ready.append("//End of declaring local signals and parameters of {}'s module section".format(module['name']))
+    module_localvars_ready.append("//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+    module_localvars_ready.append('')
+
+    return module_localvars_ready
+
 
 
 
@@ -188,11 +237,18 @@ def parse_and_create(json_data):
             print("Not found {}, creating the file...".format(full_path_to_module))
 
             with open(full_path_to_module, 'w') as created_file:
+
+                # Generating header
                 module_header = create_module_header(module)
                 print (module_header)
                 for header_entry in module_header:
                     created_file.write(header_entry + "\n")
 
+                # Generating local signals and parameters
+                module_localvars = create_module_local_variables(module)
+                print (module_header)
+                for localvar_entry in module_localvars:
+                    created_file.write(localvar_entry + "\n")
 
         print("<"*50)
         print("\n")
