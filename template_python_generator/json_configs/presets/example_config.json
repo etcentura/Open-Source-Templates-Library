@@ -51,5 +51,46 @@
         }
       ],
 
-      "testbenches": []
+      "testbenches": [
+        {
+          "path_to_place":"../../../open_source_isp_library/isp_gamma_correction/tb_src",
+
+          "timescale": "1ns/1ps",
+
+          "name": "tb_isp_gamma_correction",
+
+          "module_parameters": [
+            {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
+            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+          ],
+
+          "module_signals": [
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "clk"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "rst_n"},
+
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "in_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_last_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "bypass_mode"},
+
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "out_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_last_data"}
+          ],
+
+          "testbench_parameters": [
+
+          ],
+
+          "testbench_signals": [
+
+          ],
+
+          "clk_generation": [
+            {"clk_name": "clk", "toggle": "10"}
+          ]
+        }
+      ]
 }
