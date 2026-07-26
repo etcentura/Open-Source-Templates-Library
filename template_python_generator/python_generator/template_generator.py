@@ -296,6 +296,13 @@ def create_testbench(testbench):
             testbench_ready.append('//End of generatring {} clock section'.format(clock_name))
             testbench_ready.append(section_end_mark)
 
+    testbench_ready.append(section_begin_mark)
+    testbench_ready.append('//Begin of generatring main scenario section')
+    testbench_ready.append('')
+    testbench_ready.append('//End of generatring main scenario section')
+    testbench_ready.append(section_end_mark)
+    testbench_ready.append('')
+
     testbench_ready.append('endmodule')
 
     return testbench_ready
