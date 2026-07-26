@@ -5,6 +5,14 @@ import argparse
 ###################################################################################################################################################
 ###################################################################################################################################################
 ###################################################################################################################################################
+# Global variables
+section_begin_mark = "//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+section_end_mark = "//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+
+
+###################################################################################################################################################
+###################################################################################################################################################
+###################################################################################################################################################
  
 def create_module_header(module):
     # Create empty array ot fill it with fields
@@ -117,7 +125,7 @@ def create_module_local_variables(module):
     module_localvars_ready = []
 
     module_localvars_ready.append('')
-    module_localvars_ready.append("//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+    module_localvars_ready.append(section_begin_mark)
     module_localvars_ready.append("//Begin of declaring local signals and parameters of {}'s module section".format(module['name']))
     module_localvars_ready.append('')
 
@@ -156,7 +164,7 @@ def create_module_local_variables(module):
 
     module_localvars_ready.append('')
     module_localvars_ready.append("//End of declaring local signals and parameters of {}'s module section".format(module['name']))
-    module_localvars_ready.append("//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+    module_localvars_ready.append(section_end_mark)
     module_localvars_ready.append('')
     module_localvars_ready.append('endmodule')
 
@@ -173,7 +181,7 @@ def create_testbench(testbench):
     testbench_ready.append('')
     testbench_ready.append('module {}();'.format(testbench['name']))
     testbench_ready.append('')
-    testbench_ready.append('//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+    testbench_ready.append(section_begin_mark)
     testbench_ready.append('//Begin of declaring local signals and parameters of {} module section'.format(testbench["name"]))
 
     # Create module parameters section
@@ -224,12 +232,12 @@ def create_testbench(testbench):
     # Create testbench singnals section (WIP) #TODO
 
     testbench_ready.append('//End of declaring local signals and parameters of {} module section'.format(testbench["name"]))
-    testbench_ready.append('//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+    testbench_ready.append(section_end_mark)
     testbench_ready.append('')
 
 
     # Declare module instance
-    testbench_ready.append('//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+    testbench_ready.append(section_begin_mark)
     testbench_ready.append('//Begin of instancing {} module section'.format(testbench["name"]))
     testbench_ready.append('')
     testbench_ready.append('{}'.format(testbench['name'].replace('tb_', '')))
@@ -241,7 +249,7 @@ def create_testbench(testbench):
 
         for parameter_idx in range(len(testbench['module_parameters'])):
             param_name = testbench['module_parameters'][parameter_idx]['param_name']
-            parameter_string = '\t{} \t.({})'.format(param_name, param_name)
+            parameter_string = '\t.{} \t({})'.format(param_name, param_name)
         
             if(parameter_idx != len(testbench['module_parameters']) - 1):
                 parameter_string += ','
@@ -258,17 +266,17 @@ def create_testbench(testbench):
     if(len(testbench['module_signals']) != 0):
         for signal_idx in range(len(testbench['module_signals'])):
             signal_name = testbench['module_signals'][signal_idx]['signal_name']
-            signal_string = '\t{} \t.({})'.format(signal_name, signal_name)
+            signal_string = '\t.{} \t({})'.format(signal_name, signal_name)
 
-            if(parameter_idx != len(testbench['module_signals']) - 1):
+            if(signal_idx != len(testbench['module_signals']) - 1):
                 signal_string += ','
             
             testbench_ready.append(signal_string)
         testbench_ready.append('')
-    testbench_ready.append(')')
+    testbench_ready.append(');')
 
     testbench_ready.append('//End of instancing {} module section'.format(testbench["name"]))
-    testbench_ready.append('//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+    testbench_ready.append(section_end_mark)
 
     # Generating clock driving
     if(len(testbench['clk_generation']) != 0):
@@ -276,7 +284,7 @@ def create_testbench(testbench):
         for clock_idx in range(len(testbench['clk_generation'])):
             clock_name = testbench['clk_generation'][clock_idx]['clk_name']
             clock_toggle_time = testbench['clk_generation'][clock_idx]['toggle']
-            testbench_ready.append('//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+            testbench_ready.append(section_begin_mark)
             testbench_ready.append('//Begin of generatring {} clock section'.format(clock_name))
             testbench_ready.append('')
             testbench_ready.append('initial')
@@ -286,7 +294,7 @@ def create_testbench(testbench):
             testbench_ready.append('end')
             testbench_ready.append('')
             testbench_ready.append('//End of generatring {} clock section'.format(clock_name))
-            testbench_ready.append('//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+            testbench_ready.append(section_end_mark)
 
     testbench_ready.append('endmodule')
 
