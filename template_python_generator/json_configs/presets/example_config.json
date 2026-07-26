@@ -2,7 +2,7 @@
       "modules": [
         {
           "path_to_place":"../../../open_source_isp_library/isp_gamma_correction/sv_src",
-
+          "overwrite":"N",
           "name": "isp_gamma_correction",
 
           "parameters": [
@@ -54,7 +54,7 @@
       "testbenches": [
         {
           "path_to_place":"../../../open_source_isp_library/isp_gamma_correction/tb_src",
-
+          "overwrite":"N",
           "timescale": "1ns/1ps",
 
           "name": "tb_isp_gamma_correction",

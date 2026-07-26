@@ -332,9 +332,10 @@ def parse_and_create(json_data):
 
 
         if(os.path.exists(full_path_to_module)):
-            print("Found {}.".format(full_path_to_module))
+            if(module['overwrite'] == 'N'):
+                print("Found {}, no file overwriting.".format(full_path_to_module))
         else:
-            print("Not found {}, creating the file...".format(full_path_to_module))
+            print("Not found or being overwritten: {}, creating the file...".format(full_path_to_module))
 
             with open(full_path_to_module, 'w') as created_file:
 
@@ -369,15 +370,16 @@ def parse_and_create(json_data):
         print("Full path to module is {}".format(full_path_to_testbench))
 
         if (os.path.isdir(absolute_path_to_place)):
-            print("Found {}.".format(absolute_path_to_place))
+            print("Found {}".format(absolute_path_to_place))
         else:
             print("Not found {}, creating the directory...".format(absolute_path_to_place))
             os.makedirs(testbench['path_to_place'])
 
         if(os.path.exists(full_path_to_testbench)):
-            print("Found {}.".format(full_path_to_testbench))
+            if(module['overwrite'] == 'N'):
+                print("Found {}, no file overwriting.".format(full_path_to_testbench))
         else:
-            print("Not found {}, creating the file...".format(full_path_to_testbench))
+            print("Not found  or being overwritten: {}, creating the file...".format(full_path_to_testbench))
         
             with open(full_path_to_testbench, 'w') as created_file:
                     
