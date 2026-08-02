@@ -2,12 +2,15 @@
       "modules": [
         {
           "path_to_place":"../../../open_source_isp_library/isp_gamma_correction/sv_src",
-          "overwrite":"N",
-          "name": "isp_gamma_correction_wrapper",
+          "overwrite":"Y",
+          "name": "isp_gamma_correction",
 
           "parameters": [
-            {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
-            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+            {"param_type": "int", "param_name": "DATA_WIDTH",         "param_value": "8"},
+            {"param_type": "int", "param_name": "CSR_WIDTH",          "param_value": "32"},
+            {"param_type": "int", "param_name": "SYNC_RESET",         "param_value": "0"},
+            {"param_type": "int", "param_name": "CURVES_STEP_UP",     "param_value": "3"},
+            {"param_type": "int", "param_name": "CURVES_STEP_DN",     "param_value": "3"}
           ],
 
           "localparams": [
@@ -57,11 +60,14 @@
           "overwrite":"N",
           "timescale": "1ns/1ps",
 
-          "name": "tb_isp_gamma_correction_wrapper",
+          "name": "tb_isp_gamma_correction",
 
           "module_parameters": [
-            {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
-            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+            {"param_type": "int", "param_name": "DATA_WIDTH",         "param_value": "8"},
+            {"param_type": "int", "param_name": "CSR_WIDTH",          "param_value": "32"},
+            {"param_type": "int", "param_name": "SYNC_RESET",         "param_value": "0"},
+            {"param_type": "int", "param_name": "CURVES_STEP_UP",     "param_value": "3"},
+            {"param_type": "int", "param_name": "CURVES_STEP_DN",     "param_value": "3"}
           ],
 
           "module_signals": [

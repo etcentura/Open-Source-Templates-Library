@@ -7,8 +7,7 @@
 
           "parameters": [
             {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
-            {"param_type": "int", "param_name": "CSR_WIDTH",  "param_value": "32"},
-            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+            {"param_type": "int", "param_name": "CSR_WIDTH",  "param_value": "32"}
           ],
 
           "localparams": [
@@ -65,8 +64,7 @@
 
           "module_parameters": [
             {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
-            {"param_type": "int", "param_name": "CSR_WIDTH",  "param_value": "32"},
-            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+            {"param_type": "int", "param_name": "CSR_WIDTH",  "param_value": "32"}
           ],
 
           "module_signals": [

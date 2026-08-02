@@ -7,7 +7,7 @@
 
           "parameters": [
             {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
-            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+            {"param_type": "int", "param_name": "CSR_WIDTH",  "param_value": "32"}
           ],
 
           "localparams": [
@@ -26,9 +26,11 @@
             {"signal_type": "logic", "signal_width": "1",             "signal_name": "in_last_data"},
             {"signal_type": "logic", "signal_width": "1",             "signal_name": "bypass_mode"},
 
-            {"signal_type": "logic", "signal_width": "32",            "signal_name": "in_max_cutter_value"},
-            {"signal_type": "logic", "signal_width": "32",            "signal_name": "in_min_cutter_value"},
-            {"signal_type": "logic", "signal_width": "32",            "signal_name": "in_custom_cutter_value"}
+            {"signal_type": "logic", "signal_width": "CSR_WIDTH",     "signal_name": "in_range_cut_start_value"},
+            {"signal_type": "logic", "signal_width": "CSR_WIDTH",     "signal_name": "in_range_cut_finish_value"},
+            {"signal_type": "logic", "signal_width": "CSR_WIDTH",     "signal_name": "in_range_clipping_value"},
+            {"signal_type": "logic", "signal_width": "1",             "signal_name": "in_untouched_pixels_bypass"},
+            {"signal_type": "logic", "signal_width": "CSR_WIDTH",     "signal_name": "in_untouched_pixels_value"}
           ],
 
           "output_signals": [
@@ -65,7 +67,7 @@
 
           "module_parameters": [
             {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
-            {"param_type": "int", "param_name": "SYNC_RESET", "param_value": "0"}
+            {"param_type": "int", "param_name": "CSR_WIDTH",  "param_value": "32"}
           ],
 
           "module_signals": [
@@ -78,9 +80,11 @@
             {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_last_data"},
             {"signal_type": "logic", "signal_width": "1",            "signal_name": "bypass_mode"},
 
-            {"signal_type": "logic", "signal_width": "32",            "signal_name": "in_max_cutter_value"},
-            {"signal_type": "logic", "signal_width": "32",            "signal_name": "in_min_cutter_value"},
-            {"signal_type": "logic", "signal_width": "32",            "signal_name": "in_custom_cutter_value"}
+            {"signal_type": "logic", "signal_width": "CSR_WIDTH",     "signal_name": "in_range_cut_start_value"},
+            {"signal_type": "logic", "signal_width": "CSR_WIDTH",     "signal_name": "in_range_cut_finish_value"},
+            {"signal_type": "logic", "signal_width": "CSR_WIDTH",     "signal_name": "in_range_clipping_value"},
+            {"signal_type": "logic", "signal_width": "1",             "signal_name": "in_untouched_pixels_bypass"},
+            {"signal_type": "logic", "signal_width": "CSR_WIDTH",     "signal_name": "in_untouched_pixels_value"},
 
             {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "out_stream_data"},
             {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_valid_data"},
