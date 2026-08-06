@@ -9,4 +9,7 @@
 @REM DONE
 @REM py template_generator.py -json ../json_configs/custom/isp_cutter_filter_config.json
 
-py template_generator.py -json ../json_configs/custom/isp_universal_programmable_lut.json
+@REM DONE
+@REM py template_generator.py -json ../json_configs/custom/isp_universal_programmable_lut.json
+
+py template_generator.py -json ../json_configs/custom/isp_histogram_equalization.json
