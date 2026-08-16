@@ -1,0 +1,99 @@
+{
+      "modules": [
+        {
+          "path_to_place":"../../../open_source_isp_library/isp_adaptive_histogram_equalization/sv_src",
+          "overwrite":"Y",
+          "name": "isp_adaptive_histogram_equalization",
+
+          "parameters": [
+            {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
+            {"param_type": "int", "param_name": "MAX_IMAGE_WIDTH", "param_value": "1920"},
+            {"param_type": "int", "param_name": "MAX_IMAGE_HEIGHT", "param_value": "1080"}
+          ],
+
+          "localparams": [
+            {"localparam_type": "int", "localparam_name": "MAX_PIX_VALUE", "localparam_value": "2**DATA_WIDTH-1"},
+            {"localparam_type": "int", "localparam_name": "TOTAL_PIXELS", "localparam_value": "MAX_IMAGE_WIDTH*MAX_IMAGE_HEIGHT"}
+          ],
+
+          "basic_signals": [
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "1",            "signal_name": "clk"},
+            {"signal_direction": "input",     "signal_type": "logic", "signal_width": "1",            "signal_name": "rst_n"}
+          ],
+
+          "input_signals": [
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "in_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_last_data"},
+            {"signal_type": "logic", "signal_width": "1",             "signal_name": "bypass_mode"}
+          ],
+
+          "output_signals": [
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "out_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_last_data"}
+          ],
+
+          "inout_signals": [
+
+          ],
+
+          "internal_signals": [
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "latch_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "latch_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "latch_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "latch_last_data"}
+          ],
+
+          "functions": [
+
+          ]
+        }
+      ],
+
+      "testbenches": [
+        {
+          "path_to_place":"../../../open_source_isp_library/isp_adaptive_histogram_equalization/tb_src",
+          "overwrite":"Y",
+          "timescale": "1ns/1ps",
+
+          "name": "tb_isp_adaptive_histogram_equalization",
+
+          "module_parameters": [
+            {"param_type": "int", "param_name": "DATA_WIDTH", "param_value": "8"},
+            {"param_type": "int", "param_name": "MAX_IMAGE_WIDTH", "param_value": "1920"},
+            {"param_type": "int", "param_name": "MAX_IMAGE_HEIGHT", "param_value": "1080"}
+          ],
+
+          "module_signals": [
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "clk"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "rst_n"},
+
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "in_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "in_last_data"},
+            {"signal_type": "logic", "signal_width": "1",             "signal_name": "bypass_mode"},
+
+            {"signal_type": "logic", "signal_width": "DATA_WIDTH",   "signal_name": "out_stream_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_valid_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_first_data"},
+            {"signal_type": "logic", "signal_width": "1",            "signal_name": "out_last_data"}
+          ],
+
+          "testbench_parameters": [
+
+          ],
+
+          "testbench_signals": [
+
+          ],
+
+          "clk_generation": [
+            {"clk_name": "clk", "toggle": "10"}
+          ]
+        }
+      ]
+}

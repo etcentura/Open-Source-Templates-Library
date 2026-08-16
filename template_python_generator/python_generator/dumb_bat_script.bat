@@ -12,4 +12,8 @@
 @REM DONE
 @REM py template_generator.py -json ../json_configs/custom/isp_universal_programmable_lut.json
 
-py template_generator.py -json ../json_configs/custom/isp_histogram_equalization.json
+@REM DONE
+@REM py template_generator.py -json ../json_configs/custom/isp_histogram_equalization.json
+
+@REM QUEUED
+@REM py template_generator.py -json ../json_configs/custom/isp_adaptive_histogram_equalization.json
